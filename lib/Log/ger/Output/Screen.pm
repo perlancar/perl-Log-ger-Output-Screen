@@ -6,8 +6,6 @@ package Log::ger::Output::Screen;
 use strict;
 use warnings;
 
-use Log::ger::Util;
-
 my %colors = (
     1 => "\e[31m"  , # fatal, red
     2 => "\e[35m"  , # error, magenta
@@ -26,38 +24,39 @@ sub hook_after_log {
     print { $ctx->{_fh} } "\n" unless $msg =~ /\R\z/;
 }
 
-sub import {
-    my ($package, %import_args) = @_;
+sub get_hooks {
+    my %conf = @_;
 
-    my $stderr = $import_args{stderr};
+    my $stderr = $conf{stderr};
     $stderr = 1 unless defined $stderr;
     my $handle = $stderr ? \*STDERR : \*STDOUT;
-    my $use_color = $import_args{use_color};
+    my $use_color = $conf{use_color};
     $use_color = $ENV{COLOR} unless defined $use_color;
     $use_color = (-t STDOUT) unless defined $use_color;
-    my $formatter = $import_args{formatter};
+    my $formatter = $conf{formatter};
 
-    my $plugin = sub {
-        my %args = @_;
-        my $level = $args{level};
-        my $code = sub {
-            my $msg = $_[1];
-            if ($formatter) {
-                $msg = $formatter->($msg);
-            }
-            hook_before_log({ _fh=>$handle }, $msg);
-            if ($use_color) {
-                print $handle $colors{$level}, $msg, "\e[0m";
-            } else {
-                print $handle $msg;
-            }
-            hook_after_log({ _fh=>$handle }, $msg);
-        };
-        [$code];
+    return {
+        create_log_routine => [
+            __PACKAGE__, 50,
+            sub {
+                my %args = @_;
+                my $level = $args{level};
+                my $logger = sub {
+                    my $msg = $_[1];
+                    if ($formatter) {
+                        $msg = $formatter->($msg);
+                    }
+                    hook_before_log({ _fh=>$handle }, $msg);
+                    if ($use_color) {
+                        print $handle $colors{$level}, $msg, "\e[0m";
+                    } else {
+                        print $handle $msg;
+                    }
+                    hook_after_log({ _fh=>$handle }, $msg);
+                };
+                [$logger];
+            }],
     };
-
-    Log::ger::Util::add_plugin(
-        'create_log_routine', [50, $plugin, __PACKAGE__], 'replace');
 }
 
 1;
