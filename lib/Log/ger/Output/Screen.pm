@@ -6,6 +6,8 @@ package Log::ger::Output::Screen;
 use strict;
 use warnings;
 
+use Log::ger::Util;
+
 my %colors = (
     1 => "\e[31m"  , # fatal, red
     2 => "\e[35m"  , # error, magenta
@@ -40,9 +42,30 @@ sub get_hooks {
             __PACKAGE__, 50,
             sub {
                 my %args = @_;
-                my $level = $args{level};
                 my $logger = sub {
+                    my $level = $args{level};
                     my $msg = $_[1];
+                    if ($formatter) {
+                        $msg = $formatter->($msg);
+                    }
+                    hook_before_log({ _fh=>$handle }, $msg);
+                    if ($use_color) {
+                        print $handle $colors{$level}, $msg, "\e[0m";
+                    } else {
+                        print $handle $msg;
+                    }
+                    hook_after_log({ _fh=>$handle }, $msg);
+                };
+                [$logger];
+            }],
+        create_logml_routine => [
+            __PACKAGE__, 50,
+            sub {
+                my %args = @_;
+                my $logger = sub {
+                    my $level = Log::ger::Util::numeric_level($_[1]);
+                    return if $level > $Log::ger::Current_Level;
+                    my $msg = $_[2];
                     if ($formatter) {
                         $msg = $formatter->($msg);
                     }
