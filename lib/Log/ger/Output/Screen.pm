@@ -38,6 +38,10 @@ sub get_hooks {
     my $formatter = $conf{formatter};
 
     return {
+        # we provide two versions for testing, one using create_log_routine and
+        # one using create_logml_routine. by default, create_logml_routine will
+        # take precendence.
+
         create_log_routine => [
             __PACKAGE__, 50,
             sub {
