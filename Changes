@@ -1,3 +1,9 @@
+0.007   2017-08-03 (PERLANCAR)
+
+        - Colors now can handle custom levels (will pick nearest level when
+          there is no exact match).
+
+
 0.006   2017-08-03 (PERLANCAR)
 
 	- Make %colors package global so it can be accessed/modified from
