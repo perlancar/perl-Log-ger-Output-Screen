@@ -9,13 +9,37 @@ use warnings;
 use Log::ger::Util;
 
 our %colors = (
-    1 => "\e[31m"  , # fatal, red
-    2 => "\e[35m"  , # error, magenta
-    3 => "\e[1;34m", # warning, light blue
-    4 => "\e[32m"  , # info, green
-    5 => "",         # debug, no color
-    6 => "\e[33m"  , # trace, orange
+    10 => "\e[31m"  , # fatal, red
+    20 => "\e[35m"  , # error, magenta
+    30 => "\e[1;34m", # warning, light blue
+    40 => "\e[32m"  , # info, green
+    50 => "",         # debug, no color
+    60 => "\e[33m"  , # trace, orange
 );
+
+our %level_map;
+
+sub _pick_color {
+    my $level = shift;
+    if (defined(my $c = $colors{$level})) {
+        return $c;
+    }
+    if (defined(my $clevel = $level_map{$level})) {
+        return $colors{$clevel};
+    }
+
+    # find the nearest
+    my ($dist, $clevel);
+    for my $k (keys %colors) {
+        my $d = abs($k - $level);
+        if (!defined($dist) || $dist > $d) {
+            $dist = $d;
+            $clevel = $k;
+        }
+    }
+    $level_map{$level} = $clevel;
+    return $colors{$clevel};
+}
 
 sub hook_before_log {
     my ($ctx, $msg) = @_;
@@ -54,7 +78,7 @@ sub get_hooks {
                     }
                     hook_before_log({ _fh=>$handle }, $msg);
                     if ($use_color) {
-                        print $handle $colors{$level}, $msg, "\e[0m";
+                        print $handle _pick_color($level), $msg, "\e[0m";
                     } else {
                         print $handle $msg;
                     }
@@ -75,7 +99,7 @@ sub get_hooks {
                     }
                     hook_before_log({ _fh=>$handle }, $msg);
                     if ($use_color) {
-                        print $handle $colors{$level}, $msg, "\e[0m";
+                        print $handle _pick_color($level), $msg, "\e[0m";
                     } else {
                         print $handle $msg;
                     }
@@ -121,11 +145,6 @@ interactive mode and 0 when not in interactive mode.
 
 When defined, will pass the formatted message (but being applied with colors) to
 this custom formatter.
-
-
-=head1 TODO
-
-Allow customizing colors.
 
 
 =head1 ENVIRONMENT
