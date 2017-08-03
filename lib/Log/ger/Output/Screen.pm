@@ -8,7 +8,7 @@ use warnings;
 
 use Log::ger::Util;
 
-my %colors = (
+our %colors = (
     1 => "\e[31m"  , # fatal, red
     2 => "\e[35m"  , # error, magenta
     3 => "\e[1;34m", # warning, light blue
