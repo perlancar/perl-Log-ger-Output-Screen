@@ -75,11 +75,12 @@ sub get_hooks {
         # take precendence.
 
         create_log_routine => [
-            __PACKAGE__, 50,
-            sub {
-                my %args = @_;
+            __PACKAGE__, # key
+            50,          # priority
+            sub {        # hook
+                my %hook_args = @_;
                 my $logger = sub {
-                    my $level = $args{level};
+                    my $level = $hook_args{level};
                     my $msg = $_[1];
                     if ($formatter) {
                         $msg = $formatter->($msg);
@@ -95,9 +96,10 @@ sub get_hooks {
                 [$logger];
             }],
         create_logml_routine => [
-            __PACKAGE__, 50,
-            sub {
-                my %args = @_;
+            __PACKAGE__, # key
+            50,          # priority
+            sub {        # hook
+                my %hook_args = @_;
                 my $logger = sub {
                     my $level = Log::ger::Util::numeric_level($_[1]);
                     return if $level > $Log::ger::Current_Level;
