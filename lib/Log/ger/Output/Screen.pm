@@ -64,7 +64,7 @@ sub get_hooks {
         } elsif (defined $ENV{COLOR}) {
             $ENV{COLOR};
         } else {
-            (-t STDOUT);
+            $stderr ? (-t STDERR) : (-t STDOUT);
         }
     };
     my $formatter = $conf{formatter};
