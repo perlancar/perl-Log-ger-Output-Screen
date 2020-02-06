@@ -1,6 +1,8 @@
 package Log::ger::Output::Screen;
 
+# AUTHORITY
 # DATE
+# DIST
 # VERSION
 
 use strict;
@@ -99,7 +101,7 @@ sub get_hooks {
             __PACKAGE__, # key
             50,          # priority
             sub {        # hook
-                my %hook_args = @_;
+                my %hook_args = @_; # see Log::ger::Manual::Internals/"Arguments passed to hook"
                 my $logger = sub {
                     my $level = Log::ger::Util::numeric_level($_[1]);
                     return if $level > $Log::ger::Current_Level;
