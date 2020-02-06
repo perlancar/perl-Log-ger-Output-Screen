@@ -1,3 +1,10 @@
+0.009   2020-02-06  Released-By: PERLANCAR; Urgency: medium
+
+	- [bugfix] Check interactive on the correct handle, STDERR instead
+	  of STDOUT when 'stderr' setting is true [RT#131702] (thanks
+	  Sebastian Schleussner).
+
+
 0.008   2018-12-22  Released-By: PERLANCAR
 
 	- Observe NO_COLOR.
