@@ -53,14 +53,14 @@ sub hook_after_log {
 }
 
 sub get_hooks {
-    my %conf = @_;
+    my %plugin_conf = @_;
 
-    my $stderr = $conf{stderr};
+    my $stderr = $plugin_conf{stderr};
     $stderr = 1 unless defined $stderr;
     my $handle = $stderr ? \*STDERR : \*STDOUT;
     my $use_color = do {
-        if (defined $conf{use_color}) {
-            $conf{use_color};
+        if (defined $plugin_conf{use_color}) {
+            $plugin_conf{use_color};
         } elsif (exists $ENV{NO_COLOR}) {
             0;
         } elsif (defined $ENV{COLOR}) {
@@ -69,7 +69,7 @@ sub get_hooks {
             $stderr ? (-t STDERR) : (-t STDOUT);
         }
     };
-    my $formatter = $conf{formatter};
+    my $formatter = $plugin_conf{formatter};
 
     return {
         create_log_routine => [
@@ -78,8 +78,8 @@ sub get_hooks {
             sub {        # hook
                 my %hook_args = @_; # see Log::ger::Manual::Internals/"Arguments passed to hook"
                 my $logger = sub {
-                    my ($init_args, $msg, $meta) = @_;
-                    my $level = $meta ? $meta->{level} : $hook_args{level};
+                    my ($per_target_conf, $msg, $per_msg_conf) = @_;
+                    my $level = $per_msg_conf ? $per_msg_conf->{level} : $hook_args{level};
                     if ($formatter) {
                         $msg = $formatter->($msg);
                     }
