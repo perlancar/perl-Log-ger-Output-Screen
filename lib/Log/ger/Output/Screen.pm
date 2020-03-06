@@ -72,40 +72,14 @@ sub get_hooks {
     my $formatter = $conf{formatter};
 
     return {
-        # we provide two versions for testing, one using create_log_routine and
-        # one using create_logml_routine. by default, create_logml_routine will
-        # take precendence.
-
         create_log_routine => [
-            __PACKAGE__, # key
-            50,          # priority
-            sub {        # hook
-                my %hook_args = @_;
-                my $logger = sub {
-                    my $level = $hook_args{level};
-                    my $msg = $_[1];
-                    if ($formatter) {
-                        $msg = $formatter->($msg);
-                    }
-                    hook_before_log({ _fh=>$handle }, $msg);
-                    if ($use_color) {
-                        print $handle _pick_color($level), $msg, "\e[0m";
-                    } else {
-                        print $handle $msg;
-                    }
-                    hook_after_log({ _fh=>$handle }, $msg);
-                };
-                [$logger];
-            }],
-        create_logml_routine => [
             __PACKAGE__, # key
             50,          # priority
             sub {        # hook
                 my %hook_args = @_; # see Log::ger::Manual::Internals/"Arguments passed to hook"
                 my $logger = sub {
-                    my $level = Log::ger::Util::numeric_level($_[1]);
-                    return if $level > $Log::ger::Current_Level;
-                    my $msg = $_[2];
+                    my ($init_args, $msg, $meta) = @_;
+                    my $level = $meta ? $meta->{level} : $hook_args{level};
                     if ($formatter) {
                         $msg = $formatter->($msg);
                     }
