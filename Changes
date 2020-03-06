@@ -1,3 +1,10 @@
+0.011   2020-03-07  Released-By: PERLANCAR; Urgency: low
+
+	- No functional changes.
+
+	- Rename variables for clarity.
+
+
 0.010   2020-03-06  Released-By: PERLANCAR; Urgency: medium
 
 	- Adjust to Log::ger 0.032.
