@@ -72,12 +72,12 @@ sub get_hooks {
     my $formatter = $plugin_conf{formatter};
 
     return {
-        create_log_routine => [
+        create_outputter => [
             __PACKAGE__, # key
             50,          # priority
             sub {        # hook
                 my %hook_args = @_; # see Log::ger::Manual::Internals/"Arguments passed to hook"
-                my $logger = sub {
+                my $outputter = sub {
                     my ($per_target_conf, $msg, $per_msg_conf) = @_;
                     my $level = $per_msg_conf ? $per_msg_conf->{level} : $hook_args{level};
                     if ($formatter) {
@@ -91,7 +91,7 @@ sub get_hooks {
                     }
                     hook_after_log({ _fh=>$handle }, $msg);
                 };
-                [$logger];
+                [$outputter];
             }],
     };
 }
