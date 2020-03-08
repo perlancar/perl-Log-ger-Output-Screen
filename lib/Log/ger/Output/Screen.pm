@@ -79,7 +79,7 @@ sub get_hooks {
                 my %hook_args = @_; # see Log::ger::Manual::Internals/"Arguments passed to hook"
                 my $outputter = sub {
                     my ($per_target_conf, $msg, $per_msg_conf) = @_;
-                    my $level = $per_msg_conf ? $per_msg_conf->{level} : $hook_args{level};
+                    my $level; $level = $per_msg_conf->{level} if $per_msg_conf; $level = $hook_args{level} unless defined $level;
                     if ($formatter) {
                         $msg = $formatter->($msg);
                     }

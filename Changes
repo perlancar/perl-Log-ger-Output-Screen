@@ -1,3 +1,9 @@
+0.012   2020-03-07  Released-By: PERLANCAR; Urgency: medium
+
+	- Adjust to Log::ger 0.033 (rename hook 'create_log_routine' to
+          'create_outputter').
+
+
 0.011   2020-03-07  Released-By: PERLANCAR; Urgency: low
 
 	- No functional changes.
