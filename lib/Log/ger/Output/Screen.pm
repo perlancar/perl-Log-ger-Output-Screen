@@ -21,6 +21,10 @@ our %colors = (
 
 our %level_map;
 
+sub meta { +{
+    v => 1,
+} }
+
 sub _pick_color {
     my $level = shift;
     if (defined(my $c = $colors{$level})) {
