@@ -22,7 +22,7 @@ our %colors = (
 our %level_map;
 
 sub meta { +{
-    v => 1,
+    v => 2,
 } }
 
 sub _pick_color {
