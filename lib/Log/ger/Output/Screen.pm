@@ -8,6 +8,10 @@ package Log::ger::Output::Screen;
 use strict;
 use warnings;
 
+if ($^O eq 'MSWin32') {
+    eval { require Win32::Console::ANSI };
+}
+
 use Log::ger::Util;
 
 our %colors = (
