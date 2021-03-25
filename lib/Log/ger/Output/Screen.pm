@@ -93,6 +93,8 @@ sub get_hooks {
     my $color_depth = do {
         if (defined $plugin_conf{color_depth}) {
             $plugin_conf{color_depth};
+        } elsif (defined $ENV{COLOR_DEPTH}) {
+            $ENV{COLOR_DEPTH};
         } elsif (!$use_color) {
             0;
         } elsif (defined $ENV{COLORTERM} && $ENV{COLORTERM} eq 'truecolor') {
@@ -178,6 +180,10 @@ colors) to this custom formatter.
 
 
 =head1 ENVIRONMENT
+
+=head2 COLOR_DEPTH
+
+Will be used as a default for L</color_depth> configuration.
 
 =head2 NO_COLOR
 
