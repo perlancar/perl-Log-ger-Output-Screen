@@ -1,12 +1,12 @@
 package Log::ger::Output::Screen;
 
+use strict;
+use warnings;
+
 # AUTHORITY
 # DATE
 # DIST
 # VERSION
-
-use strict;
-use warnings;
 
 if ($^O eq 'MSWin32') {
     eval { require Win32::Console::ANSI };
@@ -152,6 +152,11 @@ sub get_hooks {
 
 =head1 DESCRIPTION
 
+This L<Log::ger> plugin outputs log messages as lines to screen (STDERR by
+default), coloring them according to the log levels. There are different color
+schemes available, see C<Log::ger::Screen::ColorScheme::*> modules like
+L<Log::ger::Screen::ColorScheme::Unlike>.
+
 
 =head1 CONFIGURATION
 
@@ -195,6 +200,11 @@ set. Consulted before L</COLOR>.
 Can be set to disable/enable color by default, if C</use_color> is not set.
 
 
+=head1 HISTORY
+
+Originally modelled after L<Log::Any::Adapter::Screen>.
+
+
 =head1 SEE ALSO
 
-Modelled after L<Log::Any::Adapter::Screen>.
+L<Log::ger>
