@@ -5,9 +5,13 @@
 
 0.018   2022-01-16  Released-By: PERLANCAR; Urgency: medium
 
+        [New features]
+
 	- [experimental] Add configuration: colorize_tags.
 
-	- [doc] Add description.
+	[Documentation]
+
+        - Add description.
 
 
 0.017   2021-03-25  Released-By: PERLANCAR; Urgency: medium
@@ -92,6 +96,6 @@
 	- Adjust to Log::ger 0.005.
 
 
-0.003    2017-06-21  Released-By: PERLANCAR
+0.003   2017-06-21  Released-By: PERLANCAR
 
          - First release, split from Log-ger.
