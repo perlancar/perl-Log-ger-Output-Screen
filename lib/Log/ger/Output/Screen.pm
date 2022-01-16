@@ -87,7 +87,7 @@ sub get_hooks {
         } elsif (defined $ENV{COLOR}) {
             $ENV{COLOR};
         } else {
-            $stderr ? (-t STDERR) : (-t STDOUT);
+            $stderr ? (-t STDERR) : (-t STDOUT); ## no critic: InputOutput::ProhibitInteractiveTest
         }
     };
     my $color_depth = do {
