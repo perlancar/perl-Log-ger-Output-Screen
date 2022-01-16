@@ -212,7 +212,7 @@ environment variable contains the string C<256color>; if yes then 256. Otherwise
 
 Bool, default false. Experimental. If set to true, will colorize "[...]" tag
 prefixes in log message with unique RGB color. Will only do this if color is
-enabled, obviously.
+enabled, obviously. This option is inspired by Dist::Zilla terminal output.
 
 For example, if log message is something like one of the following:
 
